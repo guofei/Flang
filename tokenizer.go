@@ -1,16 +1,17 @@
 package main
 
-type BuildInType int
+type TokenName int
 
 type Token struct {
-	Name string
-	Type BuildInType
+	Value string
+	Name  TokenName
 }
 
 const (
-	FLPARENTHESE BuildInType = iota
+	FLPARENTHESE TokenName = iota
 	FRPARENTHESE
-	FATOM
+	FSYMBOL
+	FBOOLEAN
 	FNUMBER
 	FSTRING
 )
@@ -27,17 +28,10 @@ func Tokenization(code string) []Token {
 		if nextIndex < 0 {
 			break
 		}
-		tokens = append(tokens, trim(Token{item, getType(item)}))
+		tokens = append(tokens, Token{item, getType(item)})
 		i = nextIndex
 	}
 	return tokens
-}
-
-func trim(token Token) Token {
-	if token.Type == FSTRING {
-		return Token{token.Name[1 : len(token.Name)-1], token.Type}
-	}
-	return token
 }
 
 func isSpliter(r byte) bool {
@@ -103,17 +97,19 @@ func nextItem(code string, i int) (string, int) {
 	return item, next
 }
 
-func getType(item string) BuildInType {
+func getType(item string) TokenName {
 	switch {
 	case item == "(":
 		return FLPARENTHESE
 	case item == ")":
 		return FRPARENTHESE
+	case IsBool(item):
+		return FBOOLEAN
 	case IsString(item):
 		return FSTRING
 	case IsNumeric(item):
 		return FNUMBER
 	default:
-		return FATOM
+		return FSYMBOL
 	}
 }

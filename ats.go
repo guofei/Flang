@@ -1,5 +1,6 @@
 package main
 
+/*
 import (
 	"container/list"
 )
@@ -13,18 +14,31 @@ func New() Expression {
 }
 
 // Variable ...
-func Variable() string {
-	// TODO
-	return ""
+func Variable(exp Expression) interface{} {
+	return exp.Front().Value
 }
 
+// IsSelfEvaluating ...
 func IsSelfEvaluating(exp Expression) bool {
-	return false
+	if exp.Len() != 1 {
+		return false
+	}
+	switch exp.Front().Value.(type) {
+	case Number, String, Boolean:
+		return true
+	default:
+		return false
+	}
 }
 
 // IsVariable ...
 func IsVariable(exp Expression) bool {
-	return false
+	switch exp.Front().Value.(type) {
+	case Symbol:
+		return true
+	default:
+		return false
+	}
 }
 
 // IsIf ...
@@ -50,3 +64,4 @@ func Operands(exp Expression) Expression {
 	// TODO
 	return exp
 }
+*/

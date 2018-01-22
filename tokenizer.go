@@ -8,12 +8,12 @@ type Token struct {
 }
 
 const (
-	FLPARENTHESE TokenName = iota
-	FRPARENTHESE
-	FSYMBOL
-	FBOOLEAN
-	FNUMBER
-	FSTRING
+	LPARENTHESE TokenName = iota
+	RPARENTHESE
+	SYMBOL
+	BOOLEAN
+	NUMBER
+	STRING
 )
 
 func Tokenization(code string) []Token {
@@ -100,16 +100,16 @@ func nextItem(code string, i int) (string, int) {
 func getType(item string) TokenName {
 	switch {
 	case item == "(":
-		return FLPARENTHESE
+		return LPARENTHESE
 	case item == ")":
-		return FRPARENTHESE
+		return RPARENTHESE
 	case IsBool(item):
-		return FBOOLEAN
+		return BOOLEAN
 	case IsString(item):
-		return FSTRING
+		return STRING
 	case IsNumeric(item):
-		return FNUMBER
+		return NUMBER
 	default:
-		return FSYMBOL
+		return SYMBOL
 	}
 }

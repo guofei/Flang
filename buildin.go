@@ -1,6 +1,8 @@
 package main
 
-type Expression interface{}
+import (
+	"fmt"
+)
 
 type Number float64
 
@@ -10,18 +12,23 @@ type String string
 
 type Boolean bool
 
+// String ...
+func (s String) String() string {
+	return fmt.Sprintf("\"%v\"", string(s))
+}
+
 // ParseToken ...
-func ParseToken(token Token) Expression {
+func ParseToken(token Token) (Expression, error) {
 	switch token.Name {
-	case FNUMBER:
-		return Number(ToFloat(token.Value))
-	case FSYMBOL:
-		return Symbol(token.Value)
-	case FSTRING:
-		return String(token.Value[1 : len(token.Value)-1])
-	case FBOOLEAN:
-		return Boolean(ToBool(token.Value))
+	case NUMBER:
+		return Number(ToFloat(token.Value)), nil
+	case SYMBOL:
+		return Symbol(token.Value), nil
+	case STRING:
+		return String(token.Value[1 : len(token.Value)-1]), nil
+	case BOOLEAN:
+		return Boolean(ToBool(token.Value)), nil
 	default:
-		return nil
+		return nil, fmt.Errorf("Can't parse token %v", token)
 	}
 }

@@ -13,22 +13,22 @@ func TestTokenization(t *testing.T) {
                 `
 	tokens := Tokenization(code)
 	except := []Token{
-		Token{"(", FLPARENTHESE},
-		Token{"define", FSYMBOL},
-		Token{"x", FSYMBOL},
-		Token{"(", FLPARENTHESE},
-		Token{"lambda", FSYMBOL},
-		Token{"(", FLPARENTHESE},
-		Token{"p1", FSYMBOL},
-		Token{")", FRPARENTHESE},
-		Token{"(", FLPARENTHESE},
-		Token{"y", FSYMBOL},
-		Token{"\"hello world\"", FSTRING},
-		Token{"p1", FSYMBOL},
-		Token{"99", FNUMBER},
-		Token{")", FRPARENTHESE},
-		Token{")", FRPARENTHESE},
-		Token{")", FRPARENTHESE},
+		Token{"(", LPARENTHESE},
+		Token{"define", SYMBOL},
+		Token{"x", SYMBOL},
+		Token{"(", LPARENTHESE},
+		Token{"lambda", SYMBOL},
+		Token{"(", LPARENTHESE},
+		Token{"p1", SYMBOL},
+		Token{")", RPARENTHESE},
+		Token{"(", LPARENTHESE},
+		Token{"y", SYMBOL},
+		Token{"\"hello world\"", STRING},
+		Token{"p1", SYMBOL},
+		Token{"99", NUMBER},
+		Token{")", RPARENTHESE},
+		Token{")", RPARENTHESE},
+		Token{")", RPARENTHESE},
 	}
 	if !reflect.DeepEqual(tokens, except) {
 		t.Error("Tokenization Error")

@@ -20,7 +20,7 @@ func IsBool(s string) bool {
 	return s == "#t" || s == "#f"
 }
 
-// ToNumber ...
+// ToFloat ...
 func ToFloat(s string) float64 {
 	f, _ := strconv.ParseFloat(s, 64)
 	return f
@@ -28,8 +28,5 @@ func ToFloat(s string) float64 {
 
 // ToBool ...
 func ToBool(s string) bool {
-	if s == "#t" {
-		return true
-	}
-	return false
+	return s == "#t"
 }

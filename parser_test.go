@@ -6,7 +6,11 @@ import (
 )
 
 func TestParse(t *testing.T) {
-	code := `(+ (* 1 1) (- 3 1))`
-	l := Parse(code)
-	fmt.Println(l)
+	code := `(+ (* 1 1) (f "xx" "yy"))`
+	ats, _ := Parse(code)
+	except := `(+ ((* (1 (1 ()))) ((f ("xx" ("yy" ()))) ())))`
+	if fmt.Sprintf("%v", ats) != except {
+		t.Error("Parse Error")
+		t.Log("ats: ", ats, "except: ", except)
+	}
 }

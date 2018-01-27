@@ -4,17 +4,26 @@ import (
 	"fmt"
 )
 
+// Number ...
 type Number float64
 
+// Symbol ...
 type Symbol string
 
+// String ...
 type String string
 
+// Boolean ...
 type Boolean bool
 
-// String ...
-func (s String) String() string {
-	return fmt.Sprintf("\"%v\"", string(s))
+// Primitive ...
+type Primitive func(Expression) (Expression, error)
+
+// Procedure ...
+type Procedure struct {
+	Parameters Expression
+	Body       Expression
+	Env        *Environment
 }
 
 // ParseToken ...

@@ -6,7 +6,7 @@ func Parse(code string) (Expression, error) {
 }
 
 func parse(tokens []Token) (Expression, error) {
-	exp := &Cell{}
+	exp := &List{}
 loop:
 	for i := 1; i < len(tokens); i++ {
 		token := tokens[i]
@@ -17,7 +17,7 @@ loop:
 				return child, err
 			}
 			exp.PushBack(child)
-			i += child.(*Cell).Len() + 1
+			i += child.(*List).Len() + 1
 		case RPARENTHESE:
 			break loop
 		default:

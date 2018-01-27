@@ -1,6 +1,20 @@
 package main
 
+import (
+	"fmt"
+)
+
 // Apply ...
 func Apply(procedure Expression, args Expression) (Expression, error) {
-	return nil, nil
+	switch p := procedure.(type) {
+	case Primitive:
+		return p(args)
+		/*
+			case Procedure:
+				// TODO
+				return nil, nil
+		*/
+	default:
+		return nil, fmt.Errorf("unknown procedure type: Apply %v", procedure)
+	}
 }

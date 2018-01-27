@@ -5,122 +5,123 @@ import (
 )
 
 // Expression ...
-type Expression interface{}
+type Expression interface {
+	String() string
+	IsAtom() bool
+}
 
-// IsSelfEvaluating ...
-func IsSelfEvaluating(exp Expression) bool {
-	switch exp.(type) {
-	case Number, String, Boolean:
+// Procedure ...
+// type Procedure List
+
+// String ...
+func (n Number) String() string {
+	return fmt.Sprintf("%v", float64(n))
+}
+
+// IsAtom ...
+func (n Number) IsAtom() bool {
+	return true
+}
+
+// String ...
+func (s Symbol) String() string {
+	return string(s)
+}
+
+// IsAtom ...
+func (s Symbol) IsAtom() bool {
+	return true
+}
+
+// String ...
+func (s String) String() string {
+	return fmt.Sprintf("\"%v\"", string(s))
+}
+
+// IsAtom ...
+func (s String) IsAtom() bool {
+	return true
+}
+
+// String ...
+func (b Boolean) String() string {
+	if b {
+		return "#t"
+	}
+	return "#f"
+}
+
+// IsAtom ...
+func (b Boolean) IsAtom() bool {
+	return true
+}
+
+// String ...
+func (f Primitive) String() string {
+	return "primitive"
+}
+
+// IsAtom ...
+func (f Primitive) IsAtom() bool {
+	return true
+}
+
+// String ...
+func (list *List) String() string {
+	switch {
+	case list.IsNull():
+		return "()"
+	case list.IsList():
+		return fmt.Sprintf("(%v %v)", list.car, list.cdr)
+	default:
+		return fmt.Sprintf("(%v . %v)", list.car, list.cdr)
+	}
+}
+
+// String ...
+func (p Procedure) String() string {
+	return fmt.Sprintf("(lambda (%v) (%v))", p.Parameters, p.Body)
+}
+
+// IsAtom ...
+func (p Procedure) IsAtom() bool {
+	return false
+}
+
+// IsAtom ...
+func (list *List) IsAtom() bool {
+	return !list.IsNull()
+}
+
+// EmptyList ...
+func EmptyList() *List {
+	return &List{}
+}
+
+// IsTrue ...
+func IsTrue(exp Expression) bool {
+	switch t := exp.(type) {
+	case Boolean:
+		return bool(t)
+	default:
 		return true
-	default:
-		return false
 	}
 }
 
-// IsVariable ...
-func IsVariable(exp Expression) bool {
-	switch exp.(type) {
-	case Symbol:
-		return true
-	default:
-		return false
-	}
-}
-
-// IsQuoted ...
-func IsQuoted(exp Expression) bool {
-	switch t := exp.(type) {
-	case *Cell:
-		car, err := t.Car()
-		if err != nil {
-			return false
-		}
-		switch ct := car.(type) {
-		case Symbol:
-			return ct == Symbol("quote")
-		default:
-			return false
-		}
-	default:
-		return false
-	}
-}
-
-// IsAssignment ...
-func IsAssignment(exp Expression) bool {
-	switch t := exp.(type) {
-	case *Cell:
-		car, err := t.Car()
-		if err != nil {
-			return false
-		}
-		switch ct := car.(type) {
-		case Symbol:
-			return ct == Symbol("set!")
-		default:
-			return false
-		}
-	default:
-		return false
-	}
-}
-
-// IsApplication ...
-func IsApplication(exp Expression) bool {
-	switch t := exp.(type) {
-	case *Cell:
-		return t.IsPair()
-	default:
-		return false
-	}
-}
-
-// TextOfQuotation ...
-func TextOfQuotation(exp Expression) (Expression, error) {
-	c, ok := exp.(*Cell)
-	if !ok {
-		return nil, fmt.Errorf("unknown quatation %v", exp)
-	}
-	return c.Cadr()
-}
-
-// Operator ...
-func Operator(exp Expression) (Expression, error) {
-	c, ok := exp.(*Cell)
-	if !ok {
-		return nil, fmt.Errorf("unknown operator %v", exp)
-	}
-	return c.Car()
-}
-
-// Operands ...
-func Operands(exp Expression) (Expression, error) {
-	c, ok := exp.(*Cell)
-	if !ok {
-		return nil, fmt.Errorf("unknown operands %v", exp)
-	}
-	return c.Cdr()
-}
-
-// NewList ...
-func EmptyList() Expression {
-	return &Cell{}
-}
-
-// Cons ...
-func Cons(exp1 Expression, exp2 Expression) Expression {
-	res := &Cell{}
-	c1, ok := exp1.(*Cell)
+// Append ...
+func Append(args ...Expression) *List {
+	res := &List{}
+	c1, ok := args[0].(*List)
 	if ok {
-		res.car = Copy(c1)
+		res.car = c1
 	} else {
-		res.car = exp1
+		res.car = args[0]
 	}
-	c2, ok := exp2.(*Cell)
+	c2, ok := args[1].(*List)
 	if ok {
-		res.cdr = Copy(c2)
+		res.cdr = c2
 	} else {
-		res.cdr = exp2
+		res.cdr = args[1]
 	}
 	return res
 }

@@ -7,20 +7,11 @@ import (
 // Expression ...
 type Expression interface {
 	String() string
-	IsAtom() bool
 }
-
-// Procedure ...
-// type Procedure List
 
 // String ...
 func (n Number) String() string {
 	return fmt.Sprintf("%v", float64(n))
-}
-
-// IsAtom ...
-func (n Number) IsAtom() bool {
-	return true
 }
 
 // String ...
@@ -28,19 +19,9 @@ func (s Symbol) String() string {
 	return string(s)
 }
 
-// IsAtom ...
-func (s Symbol) IsAtom() bool {
-	return true
-}
-
 // String ...
 func (s String) String() string {
 	return fmt.Sprintf("\"%v\"", string(s))
-}
-
-// IsAtom ...
-func (s String) IsAtom() bool {
-	return true
 }
 
 // String ...
@@ -51,19 +32,9 @@ func (b Boolean) String() string {
 	return "#f"
 }
 
-// IsAtom ...
-func (b Boolean) IsAtom() bool {
-	return true
-}
-
 // String ...
 func (f Primitive) String() string {
 	return "primitive"
-}
-
-// IsAtom ...
-func (f Primitive) IsAtom() bool {
-	return true
 }
 
 // String ...
@@ -81,16 +52,6 @@ func (list *List) String() string {
 // String ...
 func (p Procedure) String() string {
 	return fmt.Sprintf("(lambda (%v) (%v))", p.Parameters, p.Body)
-}
-
-// IsAtom ...
-func (p Procedure) IsAtom() bool {
-	return false
-}
-
-// IsAtom ...
-func (list *List) IsAtom() bool {
-	return !list.IsNull()
 }
 
 // EmptyList ...

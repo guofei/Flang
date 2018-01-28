@@ -105,6 +105,7 @@ func (list *List) PushBack(exp Expression) {
 	}
 }
 
+/*
 // MakeList ...
 func MakeList(args ...Expression) *List {
 	list := &List{}
@@ -113,22 +114,23 @@ func MakeList(args ...Expression) *List {
 	}
 	return list
 }
+*/
 
 // Copy ...
-func Copy(list *List) *List {
+func (list *List) Copy() *List {
 	res := &List{}
 	if list.IsNull() {
 		return res
 	}
 	car, ok := list.car.(*List)
 	if ok {
-		res.car = Copy(car)
+		res.car = car.Copy()
 	} else {
 		res.car = list.car
 	}
 	cdr, ok := list.cdr.(*List)
 	if ok {
-		res.cdr = Copy(cdr)
+		res.cdr = cdr.Copy()
 	} else {
 		res.cdr = list.cdr
 	}

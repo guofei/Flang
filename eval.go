@@ -23,7 +23,7 @@ func Eval(exp Expression, env *Environment) (Expression, error) {
 		operands, _ := list.Cdr()
 		args, err := listOfValues(operands, env)
 		if err != nil {
-			return nil, fmt.Errorf("unknown operands %v", exp)
+			return nil, fmt.Errorf("unknown operands %v", operands)
 		}
 		return Apply(procedure, args)
 	default:
@@ -101,7 +101,7 @@ func formFunc(f Symbol) (func(*List, *Environment) (Expression, error), bool) {
 		"define": evalDefinition,
 		"if":     evalIf,
 		"lambda": evalLambda,
-		"begin":  evalSequence,
+		"begin":  evalBegin,
 		"cond":   evalCond,
 	}
 	v, ok := dict[f]
@@ -198,7 +198,11 @@ func evalDefinition(exp *List, env *Environment) (Expression, error) {
 	if err != nil {
 		return nil, fmt.Errorf("definition error %v", exp)
 	}
-	env.Set(variable, value)
+	v, err := Eval(value, env)
+	if err != nil {
+		return nil, fmt.Errorf("definition error %v", exp)
+	}
+	env.Set(variable, v)
 	return Symbol("ok"), nil
 }
 
@@ -250,31 +254,38 @@ func evalLambda(exp *List, env *Environment) (Expression, error) {
 	if err != nil {
 		return nil, fmt.Errorf("lambda error %v", exp)
 	}
-	return Procedure{params, body, env}, nil
+	return Procedure{params, body.(*List), env}, nil
 }
 
-func evalSequence(exp *List, env *Environment) (Expression, error) {
-	return nil, nil
+func evalBegin(exps *List, env *Environment) (Expression, error) {
+	cdr, err := exps.Cdr()
+	if err != nil {
+		return nil, fmt.Errorf("begin error %v", exps)
+	}
+	return EvalSequence(cdr.(*List), env)
 }
 
+// EvalSequence ...
+func EvalSequence(exps *List, env *Environment) (Expression, error) {
+	car, err := exps.Car()
+	if err != nil {
+		return nil, fmt.Errorf("sequence error 1 %v", exps)
+	}
+	cdr, err := exps.Cdr()
+	if err != nil {
+		return nil, fmt.Errorf("sequence error 2 %v", exps)
+	}
+	if cdr.(*List).IsNull() {
+		return Eval(car, env)
+	}
+	_, err = Eval(car, env)
+	if err != nil {
+		return nil, fmt.Errorf("sequence error 3 %v", car)
+	}
+	return EvalSequence(cdr.(*List), env)
+}
+
+// TODO
 func evalCond(exp *List, env *Environment) (Expression, error) {
 	return nil, nil
 }
-
-/*
-func operator(exp Expression) (Expression, error) {
-	c, ok := exp.(*List)
-	if !ok {
-		return nil, fmt.Errorf("unknown operator %v", exp)
-	}
-	return c.Car()
-}
-
-func operands(exp Expression) (Expression, error) {
-	c, ok := exp.(*List)
-	if !ok {
-		return nil, fmt.Errorf("unknown operands %v", exp)
-	}
-	return c.Cdr()
-}
-*/

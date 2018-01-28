@@ -22,7 +22,7 @@ type Primitive func(Expression) (Expression, error)
 // Procedure ...
 type Procedure struct {
 	Parameters Expression
-	Body       Expression
+	Body       *List
 	Env        *Environment
 }
 

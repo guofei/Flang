@@ -5,11 +5,66 @@ import (
 	"testing"
 )
 
-func TestEval(t *testing.T) {
-	// self evaluating
+func TestEvalSelfEval(t *testing.T) {
 	exp := String("abc")
 	res, _ := Eval(exp, nil)
 	if fmt.Sprintf("%v", res) != `"abc"` {
+		t.Error("Eval Error")
+	}
+}
+
+func TestEvalPrimitiveAdd(t *testing.T) {
+	env := BaseEnv()
+	code := `(+ 1 2)`
+	ats, _ := Parse(code)
+	res, _ := Eval(ats, env)
+	if res != Number(3) {
+		t.Error("Eval Error")
+	}
+}
+
+func TestEvalDefinition(t *testing.T) {
+	env := BaseEnv()
+	code := `(define x 1)`
+	ats, _ := Parse(code)
+	res, _ := Eval(ats, env)
+	if res != Symbol("ok") {
+		t.Error("Eval Error")
+	}
+}
+
+func TestEvalDefinitionfunction(t *testing.T) {
+	env := BaseEnv()
+	code := `(define (double x) (+ x x))`
+	ats, _ := Parse(code)
+	res, _ := Eval(ats, env)
+	if res != Symbol("ok") {
+		t.Error("Eval Error")
+	}
+}
+
+func TestEvalBegin(t *testing.T) {
+	env := BaseEnv()
+	code := `(begin
+                   (define a 3)
+                   (define b 5)
+                   (+ a b))`
+	ats, _ := Parse(code)
+	res, _ := Eval(ats, env)
+	if res != Number(8) {
+		t.Error("Eval Error")
+	}
+}
+
+func TestEvalApplication(t *testing.T) {
+	env := BaseEnv()
+	code := `(begin
+                   (define (double x) (+ x x))
+                   (define b 5)
+                   (+ (double 2) b))`
+	ats, _ := Parse(code)
+	res, _ := Eval(ats, env)
+	if res != Number(9) {
 		t.Error("Eval Error")
 	}
 }

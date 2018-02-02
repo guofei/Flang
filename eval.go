@@ -18,7 +18,7 @@ func Eval(exp Expression, env *Environment) (Expression, error) {
 		operator, _ := list.Car()
 		procedure, err := Eval(operator, env)
 		if err != nil {
-			return nil, fmt.Errorf("unknown operator %v", exp)
+			return nil, fmt.Errorf("unknown operator %v", operator)
 		}
 		operands, _ := list.Cdr()
 		args, err := listOfValues(operands, env)
@@ -216,9 +216,9 @@ func ifAlternative(exp *List) (Expression, error) {
 		if t.IsNull() {
 			return Boolean(false), nil
 		}
-		return t, nil
+		return t.Car()
 	default:
-		return t, nil
+		return nil, fmt.Errorf("if error %v", exp)
 	}
 }
 

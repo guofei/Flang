@@ -144,7 +144,7 @@ func multiply(args Expression) (Expression, error) {
 		return nil, fmt.Errorf("multiply error %v", args)
 	}
 	if argsList.IsNull() {
-		return Number(0), nil
+		return Number(1), nil
 	}
 	car, _ := argsList.Car()
 	cdr, _ := argsList.Cdr()

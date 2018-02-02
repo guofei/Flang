@@ -33,10 +33,14 @@ Example
 Example
 
 ``` lisp
-(defune fib (n)
-  (if (<= n 1)
-      n
-      (+ (fib (- n 1)) (fib (- n 2)))))
+
+(define (factorial n)
+  (if (eq? n 1)
+      1
+      (* (factorial (- n 1)) n)))
+(factorial 5)
+
+;; result: 120
 ```
 
 ## Assignment
@@ -50,9 +54,10 @@ Example
 ``` lisp
 (define x 1)
 (set! x 10)
-(p x) ;; 10
-```
+(p x)
 
+;; result: 10
+```
 
 ## Conditions
 

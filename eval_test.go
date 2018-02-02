@@ -23,6 +23,16 @@ func TestEvalPrimitiveAdd(t *testing.T) {
 	}
 }
 
+func TestEvalPrimitivePrint(t *testing.T) {
+	env := BaseEnv()
+	code := `(p "hello world")`
+	ats, _ := Parse(code)
+	res, _ := Eval(ats, env)
+	if res != Symbol("OK") {
+		t.Error("Eval Error")
+	}
+}
+
 func TestEvalPrimitiveMultiply(t *testing.T) {
 	env := BaseEnv()
 	code := `(* 2 2)`

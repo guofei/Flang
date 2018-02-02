@@ -327,6 +327,11 @@ func isString(args Expression) (Expression, error) {
 }
 
 func printExp(args Expression) (Expression, error) {
-	fmt.Println(args)
+	list, ok := args.(*List)
+	if !ok {
+		return nil, fmt.Errorf("print error %v", args)
+	}
+	car, _ := list.Car()
+	fmt.Println(car)
 	return Symbol("OK"), nil
 }

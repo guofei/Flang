@@ -6,6 +6,12 @@ A Scheme dialect written in Golang
 
 [The eval-apply cycle](http://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4)
 
+## Hello World
+
+``` lisp
+(p "hello world")
+```
+
 ## Basic types
 
 Number, Symbol, String, Boolean, Lambda, List, Pair

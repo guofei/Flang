@@ -35,3 +35,28 @@ func TestTokenization(t *testing.T) {
 		t.Log("tokens: ", tokens, "except: ", except)
 	}
 }
+
+func TestTokenizationOneValue(t *testing.T) {
+	code := `1`
+	tokens := Tokenization(code)
+	except := []Token{
+		Token{"1", NUMBER},
+	}
+	if !reflect.DeepEqual(tokens, except) {
+		t.Error("Tokenization Error")
+		t.Log("tokens: ", tokens, "except: ", except)
+	}
+}
+
+func TestTokenizationTowValue(t *testing.T) {
+	code := `1 "abc"`
+	tokens := Tokenization(code)
+	except := []Token{
+		Token{"1", NUMBER},
+		Token{"\"abc\"", STRING},
+	}
+	if !reflect.DeepEqual(tokens, except) {
+		t.Error("Tokenization Error")
+		t.Log("tokens: ", tokens, "except: ", except)
+	}
+}

@@ -84,6 +84,8 @@ func BaseEnv() *Environment {
 		">=":      Primitive(greaterEqThan),
 		"<":       Primitive(lessThan),
 		"<=":      Primitive(lessEqThan),
+		"#t":      Boolean(true),
+		"#f":      Boolean(false),
 	}
 	for s, exp := range f {
 		env.Set(s, exp)

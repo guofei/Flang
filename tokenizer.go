@@ -90,7 +90,10 @@ func nextItem(code string, i int) (string, int) {
 		}
 		item += code[next : next+1]
 		next++
-		if next >= len(code) {
+		if next == len(code) {
+			break
+		}
+		if next > len(code) {
 			return "", -1
 		}
 	}

@@ -30,7 +30,7 @@ func (env *Environment) Set(k Symbol, v Expression) {
 }
 
 // Extend ...
-func (base *Environment) Extend(varsExp Expression, valsExp Expression) bool {
+func (env *Environment) Extend(varsExp Expression, valsExp Expression) bool {
 	vars, ok := varsExp.(*List)
 	if !ok {
 		return false
@@ -50,7 +50,7 @@ func (base *Environment) Extend(varsExp Expression, valsExp Expression) bool {
 	if err != nil {
 		return true
 	}
-	base.Set(varsCar.(Symbol), valsCar)
+	env.Set(varsCar.(Symbol), valsCar)
 	varsCdr, err := vars.Cdr()
 	if err != nil {
 		return true
@@ -59,7 +59,7 @@ func (base *Environment) Extend(varsExp Expression, valsExp Expression) bool {
 	if err != nil {
 		return true
 	}
-	return base.Extend(varsCdr.(*List), valsCdr.(*List))
+	return env.Extend(varsCdr.(*List), valsCdr.(*List))
 }
 
 // BaseEnv ...
@@ -95,6 +95,6 @@ func BaseEnv() *Environment {
 }
 
 // NewChild ...
-func (p *Environment) NewChild() *Environment {
-	return &Environment{p, make(frame)}
+func (env *Environment) NewChild() *Environment {
+	return &Environment{env, make(frame)}
 }

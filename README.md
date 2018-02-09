@@ -94,5 +94,6 @@ cons, car, cdr, list, pair ...
 - [x] REPL
 - [ ] Macro
 - [ ] Comment
+- [ ] Go Channel
 - [ ] Bootstrapping
 

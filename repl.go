@@ -31,6 +31,18 @@ func (p *IOPipe) In(code string) {
 // Out ...
 func (p *IOPipe) Out() (bool, Token) {
 	if p.IsEmpty() {
+		fmt.Print(">*   ")
+		p.s.Scan()
+		p.In(p.s.Text())
+	}
+	header := p.tokens[0]
+	p.tokens = p.tokens[1:]
+	return true, header
+}
+
+// OutFirst ...
+func (p *IOPipe) OutFirst() (bool, Token) {
+	if p.IsEmpty() {
 		fmt.Print(">> ")
 		p.s.Scan()
 		p.In(p.s.Text())
@@ -46,7 +58,10 @@ func REPL() {
 	fmt.Println("Welcome to Flang")
 	env := BaseEnv()
 	for {
-		ok, lp := p.Out()
+		ok, lp := p.OutFirst()
+		if lp.Value == "exit" {
+			break
+		}
 		if !ok {
 			continue
 		}

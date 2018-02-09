@@ -91,7 +91,7 @@ cons, car, cdr, list, pair ...
 
 ## TODOS
 
-- [ ] REPL
+- [x] REPL
 - [ ] Macro
 - [ ] Comment
 - [ ] Bootstrapping

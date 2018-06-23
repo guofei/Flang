@@ -39,13 +39,16 @@ func (f Primitive) String() string {
 
 // String ...
 func (list *List) String() string {
-	switch {
-	case list.IsNull():
-		return "()"
-	case list.IsList():
-		return fmt.Sprintf("(%v %v)", list.car, list.cdr)
-	default:
+	if !list.IsList() {
 		return fmt.Sprintf("(%v . %v)", list.car, list.cdr)
+	}
+	switch list.Len() {
+	case 0:
+		return "()"
+	case 1:
+		return fmt.Sprintf("(%v)", list.car)
+	default:
+		return fmt.Sprintf("(%v %v)", list.car, list.cdr)
 	}
 }
 

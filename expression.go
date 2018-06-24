@@ -39,17 +39,26 @@ func (f Primitive) String() string {
 
 // String ...
 func (list *List) String() string {
-	// FIXME
-	if !list.IsList() {
-		return fmt.Sprintf("(%v . %v)", list.car, list.cdr)
-	}
-	switch list.Len() {
-	case 0:
+	if list.Len() <= 0 {
 		return "()"
-	case 1:
+	}
+	return fmt.Sprintf("(%v)", list.childToString())
+}
+
+// childToString ...
+func (list *List) childToString() string {
+	if list.Len() == 0 {
+		return ""
+	}
+	if list.Len() == 1 {
 		return fmt.Sprintf("%v", list.car)
+	}
+
+	switch t := list.cdr.(type) {
+	case *List:
+		return fmt.Sprintf("%v %v", list.car, t.childToString())
 	default:
-		return fmt.Sprintf("(%v %v)", list.car, list.cdr)
+		return fmt.Sprintf("%v %v", list.car, t)
 	}
 }
 

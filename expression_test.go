@@ -13,8 +13,8 @@ func TestCons(t *testing.T) {
 		t.Log("exp: ", exp1, "except: ", except1)
 	}
 	exp2 := Cons(Number(1), EmptyList())
-	except2 := `1`
-	if fmt.Sprintf("%v", exp2) != `1` {
+	except2 := `(1)`
+	if fmt.Sprintf("%v", exp2) != except2 {
 		t.Error("Cons Error")
 		t.Log("exp: ", exp2, "except: ", except2)
 	}

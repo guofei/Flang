@@ -105,17 +105,6 @@ func (list *List) PushBack(exp Expression) {
 	}
 }
 
-/*
-// MakeList ...
-func MakeList(args ...Expression) *List {
-	list := &List{}
-	for i := len(args) - 1; i >= 0; i-- {
-		list = &List{args[i], list}
-	}
-	return list
-}
-*/
-
 // Copy ...
 func (list *List) Copy() *List {
 	res := &List{}

@@ -39,6 +39,7 @@ func (f Primitive) String() string {
 
 // String ...
 func (list *List) String() string {
+	// FIXME
 	if !list.IsList() {
 		return fmt.Sprintf("(%v . %v)", list.car, list.cdr)
 	}
@@ -46,7 +47,7 @@ func (list *List) String() string {
 	case 0:
 		return "()"
 	case 1:
-		return fmt.Sprintf("(%v)", list.car)
+		return fmt.Sprintf("%v", list.car)
 	default:
 		return fmt.Sprintf("(%v %v)", list.car, list.cdr)
 	}
@@ -72,8 +73,8 @@ func IsTrue(exp Expression) bool {
 	}
 }
 
-// Append ...
-func Append(args ...Expression) *List {
+// Cons ...
+func Cons(args ...Expression) *List {
 	res := &List{}
 	c1, ok := args[0].(*List)
 	if ok {
@@ -85,7 +86,7 @@ func Append(args ...Expression) *List {
 	if ok {
 		res.cdr = c2
 	} else {
-		res.cdr = args[1]
+		res.cdr = &List{args[1], &List{}}
 	}
 	return res
 }

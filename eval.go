@@ -91,7 +91,7 @@ func listOfValues(exps Expression, env *Environment) (Expression, error) {
 	if err != nil {
 		return restValues, err
 	}
-	return Append(firstValue, restValues), nil
+	return Cons(firstValue, restValues), nil
 }
 
 func formFunc(f Symbol) (func(*List, *Environment) (Expression, error), bool) {
@@ -161,7 +161,7 @@ func definitionVariable(exp *List) (Symbol, error) {
 }
 
 func makeLambda(params Expression, body Expression) *List {
-	return Append(Symbol("lambda"), Append(params, body))
+	return Cons(Symbol("lambda"), Cons(params, body))
 }
 
 func definitionValue(exp *List) (Expression, error) {

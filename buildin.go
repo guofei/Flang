@@ -196,18 +196,42 @@ func lessEqThan(args Expression) (Expression, error) {
 	return Boolean(n1.(Number) <= n2.(Number)), nil
 }
 
-func car(args Expression) (Expression, error) {
+func firstArg(args Expression) (Expression, error) {
 	list, ok := args.(*List)
 	if !ok {
-		return nil, fmt.Errorf("car error %v", args)
+		return nil, fmt.Errorf("args error %v", args)
+	}
+	return list.Car()
+}
+
+func firstArgAsList(args Expression) (*List, error) {
+	list, ok := args.(*List)
+	if !ok {
+		return nil, fmt.Errorf("args error %v", args)
+	}
+	first, err := list.Car()
+	if err != nil {
+		return nil, fmt.Errorf("args error %v", args)
+	}
+	firstList, ok := first.(*List)
+	if !ok {
+		return nil, fmt.Errorf("args must be a list: %v", args)
+	}
+	return firstList, nil
+}
+
+func car(args Expression) (Expression, error) {
+	list, err := firstArgAsList(args)
+	if err != nil {
+		return nil, err
 	}
 	return list.Car()
 }
 
 func cdr(args Expression) (Expression, error) {
-	list, ok := args.(*List)
-	if !ok {
-		return nil, fmt.Errorf("cdr error %v", args)
+	list, err := firstArgAsList(args)
+	if err != nil {
+		return nil, err
 	}
 	return list.Cdr()
 }
@@ -239,45 +263,60 @@ func isEqual(args Expression) (Expression, error) {
 }
 
 func isNull(args Expression) (Expression, error) {
-	list, ok := args.(*List)
-	if !ok {
-		return Boolean(false), nil
+	list, err := firstArgAsList(args)
+	if err != nil {
+		return nil, err
 	}
 	return Boolean(list.IsNull()), nil
 }
 
 func isList(args Expression) (Expression, error) {
-	list, ok := args.(*List)
-	if !ok {
-		return Boolean(false), nil
+	first, err := firstArg(args)
+	if err != nil {
+		return nil, err
 	}
-	return Boolean(list.IsList()), nil
+	firstList, ok := first.(*List)
+	if ok {
+		return Boolean(firstList.IsList()), nil
+	}
+	return Boolean(false), nil
 }
 
 func isPair(args Expression) (Expression, error) {
-	list, ok := args.(*List)
-	if !ok {
-		return Boolean(false), nil
+	first, err := firstArg(args)
+	if err != nil {
+		return nil, err
 	}
-	return Boolean(list.IsPair()), nil
+	firstList, ok := first.(*List)
+	if ok {
+		return Boolean(firstList.IsPair()), nil
+	}
+	return Boolean(false), nil
 }
 
 func isSymbol(args Expression) (Expression, error) {
-	_, ok := args.(Symbol)
+	first, err := firstArg(args)
+	if err != nil {
+		return nil, err
+	}
+	_, ok := first.(Symbol)
 	return Boolean(ok), nil
 }
 
 func isString(args Expression) (Expression, error) {
-	_, ok := args.(String)
+	first, err := firstArg(args)
+	if err != nil {
+		return nil, err
+	}
+	_, ok := first.(String)
 	return Boolean(ok), nil
 }
 
 func printExp(args Expression) (Expression, error) {
-	list, ok := args.(*List)
-	if !ok {
-		return nil, fmt.Errorf("print error %v", args)
+	first, err := firstArg(args)
+	if err != nil {
+		return nil, err
 	}
-	car, _ := list.Car()
-	fmt.Println(car)
+	fmt.Println(first)
 	return Symbol("OK"), nil
 }

@@ -236,12 +236,10 @@ func cdr(args Expression) (Expression, error) {
 	return list.Cdr()
 }
 
-// TODO test
 func cons(args Expression) (Expression, error) {
 	return args.(*List).Copy(), nil
 }
 
-// TODO test
 func list(args Expression) (Expression, error) {
 	return args.(*List).Copy(), nil
 }

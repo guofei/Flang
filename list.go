@@ -7,10 +7,7 @@ import (
 // TODO: Change rescursion to for loop
 
 // List ...
-type List struct {
-	car Expression
-	cdr Expression
-}
+type List Pair
 
 // Car ...
 func (list *List) Car() (Expression, error) {

@@ -6,70 +6,9 @@ import (
 
 // Expression ...
 type Expression interface {
+	IsAtom() bool
+	IsList() bool
 	String() string
-}
-
-// String ...
-func (n Number) String() string {
-	return fmt.Sprintf("%v", float64(n))
-}
-
-// String ...
-func (s Symbol) String() string {
-	return string(s)
-}
-
-// String ...
-func (s String) String() string {
-	return fmt.Sprintf("\"%v\"", string(s))
-}
-
-// String ...
-func (b Boolean) String() string {
-	if b {
-		return "#t"
-	}
-	return "#f"
-}
-
-// String ...
-func (f Primitive) String() string {
-	return "primitive"
-}
-
-// String ...
-func (list *List) String() string {
-	if list.Len() <= 0 {
-		return "()"
-	}
-	return fmt.Sprintf("(%v)", list.childToString())
-}
-
-// childToString ...
-func (list *List) childToString() string {
-	if list.Len() == 0 {
-		return ""
-	}
-	if list.Len() == 1 {
-		return fmt.Sprintf("%v", list.car)
-	}
-
-	switch t := list.cdr.(type) {
-	case *List:
-		return fmt.Sprintf("%v %v", list.car, t.childToString())
-	default:
-		return fmt.Sprintf("%v %v", list.car, t)
-	}
-}
-
-// String ...
-func (p Procedure) String() string {
-	return fmt.Sprintf("(lambda (%v) (%v))", p.Parameters, p.Body)
-}
-
-// EmptyList ...
-func EmptyList() *List {
-	return &List{}
 }
 
 // IsTrue ...

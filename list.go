@@ -9,6 +9,36 @@ import (
 // List ...
 type List Pair
 
+// IsAtom ...
+func (list *List) IsAtom() bool {
+	return false
+}
+
+// String ...
+func (list *List) String() string {
+	if list.Len() <= 0 {
+		return "()"
+	}
+	return fmt.Sprintf("(%v)", list.childToString())
+}
+
+// childToString ...
+func (list *List) childToString() string {
+	if list.Len() == 0 {
+		return ""
+	}
+	if list.Len() == 1 {
+		return fmt.Sprintf("%v", list.car)
+	}
+
+	switch t := list.cdr.(type) {
+	case *List:
+		return fmt.Sprintf("%v %v", list.car, t.childToString())
+	default:
+		return fmt.Sprintf("%v %v", list.car, t)
+	}
+}
+
 // Car ...
 func (list *List) Car() (Expression, error) {
 	if list.IsNull() {
@@ -121,4 +151,9 @@ func (list *List) Copy() *List {
 		res.cdr = list.cdr
 	}
 	return res
+}
+
+// EmptyList ...
+func EmptyList() *List {
+	return &List{}
 }

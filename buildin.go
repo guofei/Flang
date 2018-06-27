@@ -19,11 +19,41 @@ type Boolean bool
 // Primitive ...
 type Primitive func(Expression) (Expression, error)
 
+// IsAtom ...
+func (p Primitive) IsAtom() bool {
+	return false
+}
+
+// IsList ...
+func (p Primitive) IsList() bool {
+	return false
+}
+
+// String ...
+func (p Primitive) String() string {
+	return "primitive"
+}
+
 // Procedure ...
 type Procedure struct {
 	Parameters Expression
 	Body       *List
 	Env        *Environment
+}
+
+// IsAtom ...
+func (p Procedure) IsAtom() bool {
+	return false
+}
+
+// IsList ...
+func (p Procedure) IsList() bool {
+	return false
+}
+
+// String ...
+func (p Procedure) String() string {
+	return fmt.Sprintf("(lambda (%v) (%v))", p.Parameters, p.Body)
 }
 
 // ParseToken ...

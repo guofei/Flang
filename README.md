@@ -10,11 +10,61 @@ A Scheme dialect written in Golang
 
 ``` lisp
 (p "hello world")
+"hello world"
 ```
 
 ## Basic types
 
 Number, Symbol, String, Boolean, Lambda, List, Pair
+
+### Number
+
+```lisp
+(+ 1 2)
+3
+(- 10 2)
+8
+(* 1.5 2)
+3
+```
+
+### String
+
+```lisp
+(string? "hello world")
+#t
+```
+
+### Boolean
+
+```lisp
+(eq? 1 1)
+#t
+(eq? 1 2)
+#f
+```
+
+### Lambda
+
+```lisp
+((lambda (x) (* x x)) 2)
+4
+```
+
+### List
+
+```lisp
+(list? (list 1 2 3))
+#t
+```
+
+### Pair
+
+```lisp
+(list? (cons 1 2))
+#t
+```
+
 
 ## Definition
 
@@ -83,6 +133,7 @@ Example
 ### Lambda
 ``` lisp
 ((lambda (x) (* x x)) 2)
+4
 ```
 
 ### Standard Library

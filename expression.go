@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 // Expression ...
 type Expression interface {
 	IsAtom() bool

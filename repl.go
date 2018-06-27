@@ -62,6 +62,7 @@ func REPL() {
 		}
 		res, err := Eval(ats, env)
 		if err != nil {
+			fmt.Println(err)
 			continue
 		}
 		_, _ = printExp(res)

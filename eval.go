@@ -18,12 +18,12 @@ func Eval(exp Expression, env *Environment) (Expression, error) {
 		operator, _ := list.Car()
 		procedure, err := Eval(operator, env)
 		if err != nil {
-			return nil, fmt.Errorf("unknown operator %v", operator)
+			return nil, err
 		}
 		operands, _ := list.Cdr()
 		args, err := listOfValues(operands, env)
 		if err != nil {
-			return nil, fmt.Errorf("unknown operands %v", operands)
+			return nil, err
 		}
 		return Apply(procedure, args)
 	default:

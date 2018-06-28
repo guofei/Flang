@@ -30,12 +30,16 @@ Number, Symbol, String, Boolean, Lambda, List, Pair
 
 ### String
 
+Example
+
 ```lisp
 (string? "hello world")
 #t
 ```
 
 ### Boolean
+
+Example
 
 ```lisp
 (eq? 1 1)
@@ -46,12 +50,16 @@ Number, Symbol, String, Boolean, Lambda, List, Pair
 
 ### Lambda
 
+Example
+
 ```lisp
 ((lambda (x) (* x x)) 2)
 4
 ```
 
 ### List
+
+Example
 
 ```lisp
 (list? (list 1 2 3))
@@ -60,8 +68,10 @@ Number, Symbol, String, Boolean, Lambda, List, Pair
 
 ### Pair
 
+Example
+
 ```lisp
-(list? (cons 1 2))
+(pair? (cons 1 2))
 #t
 ```
 

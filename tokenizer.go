@@ -1,12 +1,15 @@
 package main
 
+// TokenName ...
 type TokenName int
 
+// Token ...
 type Token struct {
 	Value string
 	Name  TokenName
 }
 
+// Tokens ...
 const (
 	LPARENTHESE TokenName = iota
 	RPARENTHESE
@@ -16,6 +19,7 @@ const (
 	STRING
 )
 
+// Tokenization ...
 func Tokenization(code string) []Token {
 	tokens := []Token{}
 	i := 0

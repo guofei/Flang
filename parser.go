@@ -71,7 +71,6 @@ func parse(p Pipe) (Expression, error) {
 	if lp.Name != LPARENTHESE {
 		return nil, fmt.Errorf("unable to find LPARENTHESE")
 	}
-loop:
 	for {
 		ok, token := p.Header()
 		if !ok {
@@ -85,7 +84,7 @@ loop:
 			}
 			exp.PushBack(child)
 		case RPARENTHESE:
-			break loop
+			return exp, nil
 		default:
 			v, err := ParseToken(token)
 			if err != nil {
@@ -95,5 +94,4 @@ loop:
 		}
 		_, _ = p.Out()
 	}
-	return exp, nil
 }

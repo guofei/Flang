@@ -28,8 +28,8 @@ func (p *IOPipe) In(code string) {
 	p.tokens = append(p.tokens, tokens...)
 }
 
-// Header ...
-func (p *IOPipe) Header() (bool, Token) {
+// Peek ...
+func (p *IOPipe) Peek() (bool, Token) {
 	if p.IsEmpty() {
 		fmt.Print(">> ")
 		p.s.Scan()

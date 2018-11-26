@@ -9,7 +9,7 @@ type Pipe interface {
 	IsEmpty() bool
 	In(string)
 	Out() (bool, Token)
-	Header() (bool, Token)
+	Peek() (bool, Token)
 }
 
 // TextPipe ...
@@ -33,8 +33,8 @@ func (p *TextPipe) In(code string) {
 	p.tokens = append(p.tokens, tokens...)
 }
 
-// Header ...
-func (p *TextPipe) Header() (bool, Token) {
+// Peek ...
+func (p *TextPipe) Peek() (bool, Token) {
 	if p.IsEmpty() {
 		return false, Token{}
 	}
@@ -72,7 +72,7 @@ func parse(p Pipe) (Expression, error) {
 		return nil, fmt.Errorf("unable to find LPARENTHESE")
 	}
 	for {
-		ok, token := p.Header()
+		ok, token := p.Peek()
 		if !ok {
 			return nil, fmt.Errorf("unable to find token")
 		}
